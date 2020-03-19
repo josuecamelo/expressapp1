@@ -11,7 +11,7 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 //conexao mongoose conect db
-mongoose.connect('mongodb://localhost:27017/library');
+mongoose.connect('mongodb://localhost:27017/library', {useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 
 db.on('open', function(){
@@ -22,6 +22,22 @@ db.on('error', function(){
   console.log('ocorreu um erro.');
 })
 
+var company = mongoose.Schema({
+  name: String
+});
+
+var Company = mongoose.model('Company', company);
+
+Company.create({
+  name: 'Company 1'
+}, function (err, company) {
+  if(err) {
+    console.log('error')
+    return
+  }
+
+  console.log('Created -> ', company)
+})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
